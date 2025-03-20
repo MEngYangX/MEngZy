@@ -1,9 +1,9 @@
 # MEngZy - CS2插件
 
-<img src="https://img.shields.io/github/issues/MEngYangX/MEngZy?style=flat-square&label=Issues" alt="GitHub Issues"/>
-<img src="https://img.shields.io/github/stars/MEngYangX/MEngZy?style=flat-square&label=Stars" alt="GitHub Stars"/>
-<img src="https://img.shields.io/github/v/release/MEngYangX/MEngZy?style=flat-square&label=Release" alt="GitHub Release"/>
-<img src="https://img.shields.io/github/license/MEngYangX/MEngZy?style=flat-square&label=License" alt="License"/>
+[![Issues](https://img.shields.io/github/issues/MEngYangX/MEngZy?style=flat-square&label=Issues)](https://github.com/MEngYangX/MEngZy/issues)
+[![Stars](https://img.shields.io/github/stars/MEngYangX/MEngZy?style=flat-square&label=Stars)](https://github.com/MEngYangX/MEngZy/stargazers)
+[![Release](https://img.shields.io/github/v/release/MEngYangX/MEngZy?style=flat-square&label=Release)](https://github.com/MEngYangX/MEngZy/releases)
+[![License](https://img.shields.io/github/license/MEngYangX/MEngZy?style=flat-square&label=License)](https://github.com/MEngYangX/MEngZy/blob/main/LICENSE)
 
 ## 项目介绍
 
