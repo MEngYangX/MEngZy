@@ -24,7 +24,7 @@ MEngZy is a plugin for CS2 (Counter Strike 2) that helps manage practice session
 ## Upcoming Features
 
 * Pre-match 1v1
-* Grenade practice
+* Prac Prefire
 * Utility training
 * And more to come
 
@@ -34,7 +34,7 @@ MEngZy is a plugin for CS2 (Counter Strike 2) that helps manage practice session
 
 ## Donate
 
-Steam Trade URL:
+Steam Tradelink:
 
 https://steamcommunity.com/tradeoffer/new/?partner=1582559511&token=Rur6zYNw
 
