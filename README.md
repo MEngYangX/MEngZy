@@ -1,5 +1,7 @@
 # MEngZy - CS2插件
 
+[English](README_EN.md) | 简体中文
+
 [![Issues](https://img.shields.io/github/issues/MEngYangX/MEngZy?style=flat-square&label=Issues)](https://github.com/MEngYangX/MEngZy/issues)
 [![Stars](https://img.shields.io/github/stars/MEngYangX/MEngZy?style=flat-square&label=Stars)](https://github.com/MEngYangX/MEngZy/stargazers)
 [![Release](https://img.shields.io/github/v/release/MEngYangX/MEngZy?style=flat-square&label=Release)](https://github.com/MEngYangX/MEngZy/releases)
