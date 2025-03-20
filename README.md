@@ -1,12 +1,9 @@
 # MEngZy - CS2插件
 
-============================
-
-<div align="center">
-  <img src="https://img.shields.io/badge/语言-C%23-brightgreen" alt="C#"/>
-  <img src="https://img.shields.io/badge/基于-CounterStrikeSharp-blue" alt="基于 CounterStrikeSharp"/>
-  <img src="https://img.shields.io/badge/改编自-MatchZy-red" alt="改编自 MatchZy"/>
-</div>
+<img src="https://img.shields.io/github/issues/MEngYangX/MEngZy?style=flat-square&label=Issues" alt="GitHub Issues"/>
+<img src="https://img.shields.io/github/stars/MEngYangX/MEngZy?style=flat-square&label=Stars" alt="GitHub Stars"/>
+<img src="https://img.shields.io/github/v/release/MEngYangX/MEngZy?style=flat-square&label=Release" alt="GitHub Release"/>
+<img src="https://img.shields.io/github/license/MEngYangX/MEngZy?style=flat-square&label=License" alt="License"/>
 
 ## 项目介绍
 
