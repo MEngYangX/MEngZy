@@ -87,15 +87,15 @@ jobs:
           name: MEngZy ${{ env.MATCHZY_VERSION }}
           tag_name: ${{ env.MATCHZY_VERSION }}
           body: |
-            Please see the [`CHANGELOG.md`](https://github.com/MEngYangX/MEngZy/blob/main/CHANGELOG.md) for details on changes.
+            请查阅 [`CHANGELOG.md`](https://github.com/MEngYangX/MEngZy/blob/main/CHANGELOG.md) 以了解更新日志。
 
-            Installation:
-            There are 3 files attached here:
-            One is the MEngZy-${{ env.MATCHZY_VERSION }}.zip which only contains the MEngZy plugin files. Extract its contents in csgo/ directory of the server. (Prerequisite: Metamod and CounterStrikeSharp should be already installed on the server)
+            安装:
+            以下有3个文件:
+            一个是 MEngZy-0.0.1.zip，其中只包含 MEngZy 插件文件。将其内容解压到服务器的 csgo/ 目录中。(前置条件：Metamod和CounterStrikeSharp应该已经安装)
             
-            Second one is MEngZy-${{ env.MATCHZY_VERSION }}-with-cssharp-linux.zip which contains MEngZy plugin file as well as CounterStrikeSharp files (for linux) so that you don't have to install CounterStrikeSharp separately. Simply extract its contents in csgo/ directory of the server. 
-            Third one is MEngZy-${{ env.MATCHZY_VERSION }}-with-cssharp-windows.zip which is same as above, but for Windows.
-            (Prerequisite: Metamod should be already installed on the server, rest CounterStrikeSharp and MEngZy will be installed once you extract the contents) (WITH CSSHARP RELEASE IS RECOMMENDED FOR FIRST TIME INSTALLERS)
+            第二个是 MEngZy-0.0.1-with-cssharp-linux.zip，其中包含 MEngZy 插件文件以及 CounterStrikeSharp 文件（适用于 Linux），这样您就无需单独安装 CounterStrikeSharp。只需将其内容解压到服务器的 csgo/ 目录中。
+            第三个是 MEngZy-0.0.1-with-cssharp-windows.zip，与上述相同，但适用于 Windows。
+            (前置条件：Metamod 应已在服务器上安装，其余 CounterStrikeSharp 和 MEngZy 将在您解压内容时安装）（推荐首次安装使用 WITH CSSHARP 版本）
           draft: false
           prerelease: false
           files: |
