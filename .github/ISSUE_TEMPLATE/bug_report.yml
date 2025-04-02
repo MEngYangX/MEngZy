@@ -34,4 +34,4 @@ body:
     description: "上传日志文件或相关截图。"
     placeholder: "先点击这个文本框，然后再将文件直接拖拽到文本框中以上传。"
   validations:
-    required: true 
+    required: false
