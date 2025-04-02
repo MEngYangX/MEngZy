@@ -967,7 +967,8 @@ namespace MatchZy
             }
             if (showCreditsOnMatchStart.Value)
             {
-                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}MatchZy{ChatColors.Default} Plugin by {ChatColors.Green}WD-{ChatColors.Default}");
+                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}MEngZy{ChatColors.Default}插件由{ChatColors.Green}MEngYangX{ChatColors.Default}开发");
+                Server.PrintToChatAll($"{chatPrefix} 改编自MatchZy");
             }
             if (matchStartMessage.Value.Trim() != "" && matchStartMessage.Value.Trim() != "\"\"")
             {
@@ -991,11 +992,11 @@ namespace MatchZy
                 {
                     if (playerReadyStatus[key])
                     {
-                        playerData[key].Clan = "[Ready]";
+                        playerData[key].Clan = "[已准备]";
                     }
                     else
                     {
-                        playerData[key].Clan = "[Unready]";
+                        playerData[key].Clan = "[未准备]";
                     }
                     Server.PrintToChatAll($"PlayerName: {playerData[key].PlayerName} Clan: {playerData[key].Clan}");
                 }
@@ -1038,7 +1039,7 @@ namespace MatchZy
                 restartDelay = requiredDelay;
             }
             int currentMapNumber = matchConfig.CurrentMapNumber;
-            Log($"[HandleMatchEnd] MAP ENDED, isMatchSetup: {isMatchSetup} matchid: {liveMatchId} currentMapNumber: {currentMapNumber} tvFlushDelay: {tvFlushDelay}");
+            Log($"[HandleMatchEnd] 地图已结束，isMatchSetup: {isMatchSetup} matchid: {liveMatchId} currentMapNumber: {currentMapNumber} tvFlushDelay: {tvFlushDelay}");
 
             StopDemoRecording(tvFlushDelay - 0.5f, activeDemoFile, liveMatchId, currentMapNumber);
 
@@ -1075,7 +1076,7 @@ namespace MatchZy
             }
 
             int remainingMaps = matchConfig.NumMaps - matchzyTeam1.seriesScore - matchzyTeam2.seriesScore;
-            Log($"[HandleMatchEnd] MATCH ENDED, remainingMaps: {remainingMaps}, NumMaps: {matchConfig.NumMaps}, Team1SeriesScore: {matchzyTeam1.seriesScore}, Team2SeriesScore: {matchzyTeam2.seriesScore}");
+            Log($"[HandleMatchEnd] 比赛已结束，remainingMaps: {remainingMaps}, NumMaps: {matchConfig.NumMaps}, Team1SeriesScore: {matchzyTeam1.seriesScore}, Team2SeriesScore: {matchzyTeam2.seriesScore}");
             if (matchzyTeam1.seriesScore == matchzyTeam2.seriesScore && remainingMaps <= 0)
             {
                 EndSeries(null, restartDelay - 1, t1score, t2score);
@@ -1101,17 +1102,17 @@ namespace MatchZy
             }
             if (matchzyTeam1.seriesScore > matchzyTeam2.seriesScore)
             {
-                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{matchzyTeam1.teamName}{ChatColors.Default} is winning the series {ChatColors.Green}{matchzyTeam1.seriesScore}-{matchzyTeam2.seriesScore}{ChatColors.Default}");
+                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{matchzyTeam1.teamName}{ChatColors.Default} 赢得了系列赛 {ChatColors.Green}{matchzyTeam1.seriesScore}-{matchzyTeam2.seriesScore}{ChatColors.Default}");
 
             }
             else if (matchzyTeam2.seriesScore > matchzyTeam1.seriesScore)
             {
-                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{matchzyTeam2.teamName}{ChatColors.Default} is winning the series {ChatColors.Green}{matchzyTeam2.seriesScore}-{matchzyTeam1.seriesScore}{ChatColors.Default}");
+                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{matchzyTeam2.teamName}{ChatColors.Default} 赢得了系列赛 {ChatColors.Green}{matchzyTeam2.seriesScore}-{matchzyTeam1.seriesScore}{ChatColors.Default}");
 
             }
             else
             {
-                Server.PrintToChatAll($"{chatPrefix} The series is tied at {ChatColors.Green}{matchzyTeam1.seriesScore}-{matchzyTeam2.seriesScore}{ChatColors.Default}");
+                Server.PrintToChatAll($"{chatPrefix} 系列赛平局 {ChatColors.Green}{matchzyTeam1.seriesScore}-{matchzyTeam2.seriesScore}{ChatColors.Default}");
             }
             matchConfig.CurrentMapNumber += 1;
             string nextMap = matchConfig.Maplist[matchConfig.CurrentMapNumber];
@@ -1145,7 +1146,7 @@ namespace MatchZy
 
         private void ChangeMap(string mapName, float delay)
         {
-            Log($"[ChangeMap] Changing map to {mapName} with delay {delay}");
+            Log($"[ChangeMap] 正在更改地图为 {mapName}，延迟 {delay} 秒");
             AddTimer(delay, () =>
             {
                 if (long.TryParse(mapName, out _))
@@ -1176,7 +1177,7 @@ namespace MatchZy
             }
             else
             {
-                return "Draw";
+                return "平局";
             }
         }
 
@@ -1260,16 +1261,16 @@ namespace MatchZy
                     string round = GetRoundNumer().ToString("D2");
                     lastBackupFileName = $"matchzy_{liveMatchId}_{matchConfig.CurrentMapNumber}_round{round}.txt";
                     lastMatchZyBackupFileName = $"matchzy_{liveMatchId}_{matchConfig.CurrentMapNumber}_round{round}.json";
-                    Log($"[HandlePostRoundEndEvent] Setting lastBackupFileName to {lastBackupFileName} and lastMatchZyBackupFileName to {lastMatchZyBackupFileName}");
+                    Log($"[HandlePostRoundEndEvent] 设置 lastBackupFileName 为 {lastBackupFileName} 和 lastMatchZyBackupFileName 为 {lastMatchZyBackupFileName}");
 
                     // One of the team did not use .stop command hence display the proper message after the round has ended.
                     if (stopData["ct"] && !stopData["t"])
                     {
-                        Server.PrintToChatAll($"{chatPrefix} The round restore request by {ChatColors.Green}{reverseTeamSides["CT"].teamName}{ChatColors.Default} was cancelled as the round ended");
+                        Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{reverseTeamSides["CT"].teamName}{ChatColors.Default} 的回合恢复请求已取消，因为回合已结束");
                     }
                     else if (!stopData["ct"] && stopData["t"])
                     {
-                        Server.PrintToChatAll($"{chatPrefix} The round restore request by {ChatColors.Green}{reverseTeamSides["TERRORIST"].teamName}{ChatColors.Default} was cancelled as the round ended");
+                        Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{reverseTeamSides["TERRORIST"].teamName}{ChatColors.Default} 的回合恢复请求已取消，因为回合已结束");
                     }
 
                     // Invalidate .stop requests after a round is completed.
@@ -1289,7 +1290,7 @@ namespace MatchZy
             }
             catch (Exception e)
             {
-                Log($"[HandlePostRoundEndEvent FATAL] An error occurred: {e.Message}");
+                Log($"[HandlePostRoundEndEvent FATAL] 发生错误: {e.Message}");
             }
         }
 
@@ -2119,18 +2120,18 @@ namespace MatchZy
         {
             if (filePath == null || fileUploadURL == "")
             {
-                Log($"[UploadFileAsync] Not able to upload the file, either filePath or fileUploadURL is not set. filePath: {filePath} fileUploadURL: {fileUploadURL}");
+                Log($"[UploadFileAsync] 无法上传文件，filePath或fileUploadURL未设置。filePath: {filePath} fileUploadURL: {fileUploadURL}");
                 return;
             }
 
             try
             {
                 using var httpClient = new HttpClient();
-                Log($"[UploadFileAsync] Going to upload the file on {fileUploadURL}. Complete path: {filePath}");
+                Log($"[UploadFileAsync] 准备上传文件到 {fileUploadURL}。完整路径: {filePath}");
 
                 if (!File.Exists(filePath))
                 {
-                    Log($"[UploadFileAsync ERROR] File not found: {filePath}");
+                    Log($"[UploadFileAsync ERROR] 文件未找到: {filePath}");
                     return;
                 }
 
@@ -2163,16 +2164,16 @@ namespace MatchZy
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Log($"[UploadFileAsync] File upload successful for matchId: {matchId} mapNumber: {mapNumber} fileName: {Path.GetFileName(filePath)}.");
+                    Log($"[UploadFileAsync] 文件上传成功，比赛ID: {matchId} 地图编号: {mapNumber} 文件名: {Path.GetFileName(filePath)}。");
                 }
                 else
                 {
-                    Log($"[UploadFileAsync ERROR] Failed to upload file. Status code: {response.StatusCode} Response: {await response.Content.ReadAsStringAsync()}");
+                    Log($"[UploadFileAsync ERROR] 文件上传失败。状态码: {response.StatusCode} 响应: {await response.Content.ReadAsStringAsync()}");
                 }
             }
             catch (Exception e)
             {
-                Log($"[UploadFileAsync FATAL] An error occurred: {e.Message}");
+                Log($"[UploadFileAsync FATAL] 发生错误: {e.Message}");
             }
         }
 
@@ -2196,7 +2197,7 @@ namespace MatchZy
             {
                 if (!whiteList.Contains(steamId.ToString()))
                 {
-                    Log($"[EventPlayerConnectFull] KICKING PLAYER STEAMID: {steamId}, Name: {player.PlayerName} (Not whitelisted!)");
+                    Log($"[EventPlayerConnectFull] 踢出玩家 STEAMID: {steamId}, 名称: {player.PlayerName} (未在白名单中！)");
                     PrintToAllChat($"踢出玩家 {player.PlayerName} - 未在白名单中。");
                     KickPlayer(player);
                     return true;
