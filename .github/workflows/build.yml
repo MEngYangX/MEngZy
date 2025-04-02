@@ -4,6 +4,8 @@ on:
   push:
     paths-ignore:
         - "documentation/**"
+        - ".github/**"
+        - "README.md"
     branches:
       - main
   workflow_dispatch:
