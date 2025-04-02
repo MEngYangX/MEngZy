@@ -1,38 +1,21 @@
 ---
-name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
+name: Bug反馈
+about: 报告插件中遇到的错误以帮助我们改进
+title: "[Bug] "
+labels: bug
 assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+### 检查项
+请逐个检查下列项目，并勾选确认。
+- [ ] 我已在 Issues 页面中搜索，确认了这一 Bug 未被提交过。
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+### 描述
+详细描述该 Bug 的具体表现。
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+### 重现步骤
+详细描述要怎么操作才能再次触发这个 Bug。
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
-
-**Additional context**
-Add any other context about the problem here.
+### 日志与附件
+上传日志文件或相关截图。
