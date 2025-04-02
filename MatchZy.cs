@@ -23,11 +23,11 @@ namespace MatchZy
     {
 
         public override string ModuleName => "MatchZy";
-        public override string ModuleVersion => "0.0.1";
+        public override string ModuleVersion => "0.0.2";
 
         public override string ModuleAuthor => "MEng_YangX - (https://github.com/MEngYangX)";
 
-        public override string ModuleDescription => "A plugin for running and managing CS2 practice/pugs/scrims/matches! Adapted from MatchZy";
+        public override string ModuleDescription => "MEngZy 是一个用于 CS2（Counter Strike 2）的插件，用于运行和管理练习/PUG/训练赛/比赛，并提供简单的配置！这是基于优秀的 MatchZy 插件进行本地化和功能增强的版本。";
 
         public string chatPrefix = $"[{ChatColors.Green}MatchZy{ChatColors.Default}]";
         public string adminChatPrefix = $"[{ChatColors.Red}ADMIN{ChatColors.Default}]";
