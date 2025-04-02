@@ -67,8 +67,8 @@ namespace MatchZy
                     vetoStateTimer = null;
                     return;
                 }
-                Server.PrintToChatAll($"{chatPrefix} Captain for {ChatColors.Green}{matchzyTeam1.teamName}{ChatColors.Default}: {ChatColors.Green}{playerData[team1Captain].PlayerName}{ChatColors.Default}");
-                Server.PrintToChatAll($"{chatPrefix} Captain for {ChatColors.Green}{matchzyTeam2.teamName}{ChatColors.Default}: {ChatColors.Green}{playerData[team2Captain].PlayerName}{ChatColors.Default}");
+                Server.PrintToChatAll($"{chatPrefix} {matchzyTeam1.teamName}{ChatColors.Green}队{ChatColors.Default}队长: {ChatColors.Green}{playerData[team1Captain].PlayerName}{ChatColors.Default}");
+                Server.PrintToChatAll($"{chatPrefix} {matchzyTeam2.teamName}{ChatColors.Green}队{ChatColors.Default}队长: {ChatColors.Green}{playerData[team2Captain].PlayerName}{ChatColors.Default}");
 
                 HandleVetoStep();
                 vetoStateTimer?.Kill();
@@ -77,7 +77,7 @@ namespace MatchZy
             }
             warningsPrinted++;
             int secondsRemaining = vetoCountdownTime - warningsPrinted + 1;
-            Server.PrintToChatAll($"{chatPrefix} Map selection commencing in {secondsRemaining}");
+            Server.PrintToChatAll($"{chatPrefix} 地图选择将在 {secondsRemaining} 秒后开始");
         }
 
         public void HandleVetoStep()
@@ -127,40 +127,40 @@ namespace MatchZy
             switch (option) 
             {
                 case "team1_ban":
-                    action = $"{ChatColors.Green}{matchzyTeam1.teamName}{ChatColors.Default} must now {ChatColors.Red}BAN{ChatColors.Default} a map.";
+                    action = $"{ChatColors.Green}{matchzyTeam1.teamName}{ChatColors.Default} 现在必须{ChatColors.Red}禁用{ChatColors.Default}一张地图。";
                     client = vetoCaptains["team1"];
-                    stepMessage = $"Use .ban <map> to ban a map";
+                    stepMessage = $"使用 .ban <地图名> 来禁用一张地图";
                     break;
                 case "team2_ban":
-                    action = $"{ChatColors.Green}{matchzyTeam2.teamName}{ChatColors.Default} must now {ChatColors.Red}BAN{ChatColors.Default} a map.";
+                    action = $"{ChatColors.Green}{matchzyTeam2.teamName}{ChatColors.Default} 现在必须{ChatColors.Red}禁用{ChatColors.Default}一张地图。";
                     client = vetoCaptains["team2"];
-                    stepMessage = $"Use .ban <map> to ban a map";
+                    stepMessage = $"使用 .ban <地图名> 来禁用一张地图";
                     break;                                                       
                 case "team1_pick":
-                    action = $"{ChatColors.Green}{matchzyTeam1.teamName}{ChatColors.Default} must now {ChatColors.Green}PICK{ChatColors.Default} a map to play as map {matchConfig.Maplist.Count + 1}.";
+                    action = $"{ChatColors.Green}{matchzyTeam1.teamName}{ChatColors.Default} 现在必须{ChatColors.Green}选择{ChatColors.Default}地图 {matchConfig.Maplist.Count + 1}。";
                     client = vetoCaptains["team1"];
-                    stepMessage = $"Use .pick <map> to pick a map.";
+                    stepMessage = $"使用 .pick <地图名> 来选择一张地图。";
                     break;
                 case "team2_pick":
-                    action = $"{ChatColors.Green}{matchzyTeam2.teamName}{ChatColors.Default} must now {ChatColors.Green}PICK{ChatColors.Default} a map to play as map {matchConfig.Maplist.Count + 1}.";
+                    action = $"{ChatColors.Green}{matchzyTeam2.teamName}{ChatColors.Default} 现在必须{ChatColors.Green}选择{ChatColors.Default}地图 {matchConfig.Maplist.Count + 1}。";
                     client = vetoCaptains["team2"];
-                    stepMessage = $"Use .pick <map> to pick a map.";
+                    stepMessage = $"使用 .pick <地图名> 来选择一张地图。";
                     break;
             }
             if (!playerData.ContainsKey(client) || !playerData[client].IsValid)
             {
-                Log($"[PromptForMapSelectionInChat] Invalid captain found with ID: {client}");
+                Log($"[PromptForMapSelectionInChat] 找不到有效的队长，ID: {client}");
                 return;
             }
             Server.PrintToChatAll($"{chatPrefix} {action}");
 
             string mapListAsString = string.Join(", ", matchConfig.MapsLeftInVetoPool);
-            Server.PrintToChatAll($"{chatPrefix} Remaining Maps: {mapListAsString}");
+            Server.PrintToChatAll($"{chatPrefix} 剩余地图: {mapListAsString}");
 
             playerData[client].PrintToChat($"{chatPrefix} {stepMessage}");
         }
 
-        [ConsoleCommand("css_pick", "Picks map")]
+        [ConsoleCommand("css_pick", "选择地图")]
         public void OnPickMapCommand(CCSPlayerController? player, CommandInfo? command) {
             if (player == null || command == null) return;
             if (command.ArgCount < 1) return;
@@ -168,7 +168,7 @@ namespace MatchZy
             HandeMapPickCommand(player, mapArg);
         }
 
-        [ConsoleCommand("css_ban", "Bans map")]
+        [ConsoleCommand("css_ban", "禁用地图")]
         public void OnBanMapCommand(CCSPlayerController? player, CommandInfo? command) { 
             if (player == null || command == null) return;
             if (command.ArgCount < 1) return;
@@ -199,7 +199,7 @@ namespace MatchZy
             if (player.UserId != vetoCaptains[currentTeamToBan]) return;
 
             if (!BanMap(map, playerTeam)) {
-                PrintToPlayerChat(player, $"{map} is not a valid map.");
+                PrintToPlayerChat(player, $"{map} 不是有效的地图。");
             } else {
                 HandleVetoStep();
             }
@@ -229,7 +229,7 @@ namespace MatchZy
             if (player.UserId != vetoCaptains[currentTeamToPick]) return;
 
             if (!PickMap(map, playerTeam)) {
-                PrintToPlayerChat(player, $"{map} is not a valid map.");
+                PrintToPlayerChat(player, $"{map} 不是有效的地图。");
             } else {
                 HandleVetoStep();
             }
@@ -245,7 +245,7 @@ namespace MatchZy
 
             if (team != 0) {
                 matchzyTeam = (team == 2) ? reverseTeamSides["TERRORIST"] : reverseTeamSides["CT"];
-                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{matchzyTeam.teamName}{ChatColors.Default} picked {ChatColors.Green}{mapRemovedName}{ChatColors.Default} as map {matchConfig.Maplist.Count + 1}");
+                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{matchzyTeam.teamName}{ChatColors.Default} 选择了 {ChatColors.Green}{mapRemovedName}{ChatColors.Default} 作为地图 {matchConfig.Maplist.Count + 1}");
             }
 
             matchConfig.Maplist.Add(mapRemovedName);
@@ -277,7 +277,7 @@ namespace MatchZy
 
             if (team != 0) {
                 matchzyTeam = (team == 2) ? reverseTeamSides["TERRORIST"] : reverseTeamSides["CT"];
-                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{matchzyTeam.teamName}{ChatColors.Default} banned {ChatColors.LightRed}{mapRemovedName}{ChatColors.Default}");
+                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{matchzyTeam.teamName}{ChatColors.Default} 禁用了 {ChatColors.LightRed}{mapRemovedName}{ChatColors.Default}");
             }
 
             var mapMapVetoedEvent = new MatchZyMapVetoedEvent
@@ -299,8 +299,8 @@ namespace MatchZy
         public void AbortVeto()
         {
             // Todo: Add AbortVeto() when captain is disconnecting in-between veto
-            Server.PrintToChatAll($"{chatPrefix} A team captain left during map selection. Map selection is paused.");
-            Server.PrintToChatAll($"{chatPrefix} Type .ready when you are ready to resume map selection.");
+            Server.PrintToChatAll($"{chatPrefix} 有队长在地图选择过程中离开。地图选择已暂停。");
+            Server.PrintToChatAll($"{chatPrefix} 准备好继续地图选择时请输入 .ready。");
             isPreVeto = true;
             isVeto = false;
             if (isPaused)
@@ -321,7 +321,7 @@ namespace MatchZy
 
         public void FinishVeto() 
         {
-            Server.PrintToChatAll($"{chatPrefix} The maps have been decided:");
+            Server.PrintToChatAll($"{chatPrefix} 地图已确定:");
             matchConfig.MapsLeftInVetoPool.Clear();
 
             if (isPaused) {
@@ -332,7 +332,7 @@ namespace MatchZy
             int mapNumber = matchConfig.CurrentMapNumber;
 
             for (int i = mapNumber; i < matchConfig.Maplist.Count; i++) {
-                Server.PrintToChatAll($"{chatPrefix} Map {i + 1 - mapNumber}: {matchConfig.Maplist[i]}.");
+                Server.PrintToChatAll($"{chatPrefix} 地图 {i + 1 - mapNumber}: {matchConfig.Maplist[i]}。");
             }
 
             string currentMapName = Server.MapName;
@@ -457,12 +457,12 @@ namespace MatchZy
             Team matchzyTeam = (team == CsTeam.CounterTerrorist) ? reverseTeamSides["CT"] : reverseTeamSides["TERRORIST"];
             string teamString = (matchzyTeam == matchzyTeam1) ? "team1" : "team2";
             
-            Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{matchzyTeam.teamName}{ChatColors.Default} must now pick a side to play on {ChatColors.Green}{mapName}{ChatColors.Default}");
+            Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{matchzyTeam.teamName}{ChatColors.Default} 现在需要选择在 {ChatColors.Green}{mapName}{ChatColors.Default} 上的出生阵营");
 
             int client = vetoCaptains[teamString];
             if (!playerData.ContainsKey(client) || !playerData[client].IsValid) return;
 
-            playerData[client].PrintToChat($"{chatPrefix} Use .ct or .t to pick a side");
+            playerData[client].PrintToChat($"{chatPrefix} 使用 .ct 或 .t 来选择阵营");
         }
 
         public bool ValidateMapBanLogic() 
@@ -481,13 +481,13 @@ namespace MatchZy
 
             // Example: In a Bo3, at least 2 of the options must be picks to avoid randomly selecting map order of remaining maps.
             if (matchConfig.NumMaps > 1 && numberOfPicks < matchConfig.NumMaps - 1) {
-                Log($"[ValidateMapBanLogic] In a series of {matchConfig.NumMaps} maps, at least {matchConfig.NumMaps - 1} veto options must be picks. Found {numberOfPicks} pick(s).");
+                Log($"[ValidateMapBanLogic] 在 {matchConfig.NumMaps} 张地图的系列赛中，至少需要 {matchConfig.NumMaps - 1} 个选择选项。找到 {numberOfPicks} 个选择。");
                 return false;
             }
 
             if (matchConfig.MapsPool.Count - 1 != matchConfig.MapBanOrder.Count && numberOfPicks != matchConfig.NumMaps) {
                 // Example: Map pool of 7 requires 6 picks/bans *unless* we have picks for all maps.
-                Log($"[ValidateMapBanLogic] The number of maps in the pool {matchConfig.MapsPool.Count} must be one larger than the number of map picks/bans {matchConfig.MapBanOrder.Count}, unless the number of picks {numberOfPicks} matches the series length {matchConfig.NumMaps}.");
+                Log($"[ValidateMapBanLogic] 地图池中的地图数量 {matchConfig.MapsPool.Count} 必须比地图选择/禁用数量 {matchConfig.MapBanOrder.Count} 多一个，除非选择数量 {numberOfPicks} 等于系列赛长度 {matchConfig.NumMaps}。");
                 return false;
             }
 
@@ -529,7 +529,7 @@ namespace MatchZy
 
             Team matchzyTeam = (team == "team1") ? matchzyTeam1 : matchzyTeam2;
 
-            Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{matchzyTeam.teamName}{ChatColors.Default} elected to start as {ChatColors.Green}{sideFormatted}{ChatColors.Default} on {ChatColors.Green}{mapName}{ChatColors.Default}.");
+            Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{matchzyTeam.teamName}{ChatColors.Default} 选择在 {ChatColors.Green}{mapName}{ChatColors.Default} 上以 {ChatColors.Green}{sideFormatted}{ChatColors.Default} 方开始。");
 
             var sidePickedEvent = new MatchZySidePickedEvent
             {
