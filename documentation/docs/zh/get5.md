@@ -1,6 +1,6 @@
 ## Get5 面板
 
-MatchZy可以与Get5 Web面板（[G5V](https://github.com/PhlexPlexico/G5V)和[G5API](https://github.com/PhlexPlexico/G5API)）配合使用，以设置和管理比赛！
+MEngZy可以与Get5 Web面板（[G5V](https://github.com/PhlexPlexico/G5V)和[G5API](https://github.com/PhlexPlexico/G5API)）配合使用，以设置和管理比赛！
 
 ### 功能
 
@@ -12,7 +12,7 @@ MatchZy可以与Get5 Web面板（[G5V](https://github.com/PhlexPlexico/G5V)和[G
 5. 在正在进行的游戏中添加玩家
 6. 以及更多功能！！！
 
-### 如何将Get5面板与MatchZy一起使用？
+### 如何将Get5面板与MEngZy一起使用？
 
 这很简单，只需安装Get5面板，在其中添加您的服务器，您就可以像Get5 CSGO一样创建和管理比赛 :D
 

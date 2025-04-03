@@ -1,0 +1,70 @@
+site_name: MEngZy
+site_url: https://mengyangx.github.io/MEngZy/
+repo_url: https://github.com/MEngYangX/MEngZy
+repo_name: shobhit-pathak/MatchZy
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+      primary: teal
+      accent: purple 
+    - scheme: slate 
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode    
+      primary: teal
+      accent: lime
+  features:
+    - header.autohide
+    - navigation.indexes
+    - navigation.instant
+    - navigation.instant.progress
+
+nav:
+  - 中文:
+      - 主页: zh/index.md
+      - 开始:
+          - 安装: zh/安装.md
+          - 配置: zh/配置.md
+          - Get5 面版: zh/get5.md
+      - 基础:
+        - 开始使用: zh/开始使用.md
+        - 比赛设置: zh/比赛设置.md
+        - 命令: zh/命令.md
+        - GOTV 和 DEmos: zh/gotv.md
+      - 高级:
+        - 开发者: zh/开发者.md
+        - 事件和转发: zh/事件和转发.md
+        - 数据库统计: zh/数据库统计.md
+      - 赞助: zh/赞助.md
+      - 致谢: zh/致谢.md
+  - English:
+    - Home: en/index.md
+    - Setup:
+        - Installation: en/installation.md
+        - Configuration: en/configuration.md
+        - Get5 Panel: en/get5.md
+    - Basics:
+        - Getting Started: en/getting_started.md
+        - Match Setup: en/match_setup.md
+        - Commands: en/commands.md
+        - GOTV & Demos: en/gotv.md
+    - Advanced:
+        - Developers: en/developers.md
+        - Events & Forwards: en/events_and_forwards.md
+        - Database Stats: en/database_stats.md
+    - Donation: en/donation.md
+    - Credits and thanks!: en/credits.md
+
+extra:
+  alternate:
+    - name: 中文
+      link: /MEngZy/zh/
+      lang: zh
+    - name: English
+      link: /MEngZy/en/
+      lang: en

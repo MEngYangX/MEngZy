@@ -1,6 +1,6 @@
 ## GOTV 直播
 
-MatchZy不会更改GOTV的直播部分，但当地图结束时，如果启用了GOTV，它会自动调整
+MEngZy不会更改GOTV的直播部分，但当地图结束时，如果启用了GOTV，它会自动调整
 [`mp_match_restart_delay`](https://totalcsgo.com/command/mpmatchrestartdelay)，
 确保其不会短于GOTV直播完成所需的时间。
 
@@ -12,7 +12,7 @@ MatchZy不会更改GOTV的直播部分，但当地图结束时，如果启用了
 
 ## 录制Demo
 
-MatchZy会自动录制demo。录制在所有队伍准备就绪后开始，并在地图结果出现后结束。
+MEngZy会自动录制demo。录制在所有队伍准备就绪后开始，并在地图结果出现后结束。
 
 demo路径可以使用`matchzy_demo_path <directory>/`配置。如果定义了，它不能以斜杠开头，必须以斜杠结尾。设置为空字符串则使用csgo根目录。
 
@@ -21,11 +21,11 @@ Demo文件将根据`matchzy_demo_name_format`命名。默认格式为：`"{TIME}
 !!! info "GOTV录制的广播延迟"
 
     当GOTV录制停止时，服务器将其帧缓冲区刷新到磁盘。如果您有较长的`tv_delay`，这可能导致GOTV广播出现延迟或完全冻结，
-    因此MatchZy会等待整个比赛广播完成后才停止录制demo。
+    因此MEngZy会等待整个比赛广播完成后才停止录制demo。
 
 ## 自动上传
 
-除了录制demo外，MatchZy还可以在录制停止时将它们上传到URL。您可以使用
+除了录制demo外，MEngZy还可以在录制停止时将它们上传到URL。您可以使用
 `matchzy_demo_upload_url <upload_url>`定义上传URL。HTTP正文将是压缩的demo文件，您可以
 阅读[头信息](#头信息)获取文件元数据。
 
@@ -33,7 +33,7 @@ Demo文件将根据`matchzy_demo_name_format`命名。默认格式为：`"{TIME}
 
 ### 头信息
 
-MatchZy将向其demo上传请求添加以下HTTP头：
+MEngZy将向其demo上传请求添加以下HTTP头：
 
 1. `MatchZy-FileName`是demo文件的名称
 2. `MatchZy-MapNumber`是系列赛中从0开始索引的地图编号
