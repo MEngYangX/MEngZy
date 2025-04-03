@@ -30,7 +30,7 @@ MEngZy is a plugin for CS2 (Counter Strike 2) that helps manage practice session
 
 ## Documentation
 
-[MEngZy Wiki](https://github.com/MEngYangX/MEngZy/wiki)
+[MEngZy Wiki](https://mengyangx.github.io/MEngZy/zh/)
 
 ## Donate
 

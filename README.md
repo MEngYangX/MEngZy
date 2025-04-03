@@ -30,7 +30,7 @@ MEngZy 是一个用于 CS2（Counter Strike 2）的插件，用于运行和管�
 
 ## 文档
 
-[MEngZy Wiki](https://github.com/MEngYangX/MEngZy/wiki)
+[MEngZy Wiki](https://mengyangx.github.io/MEngZy/zh/)
 
 ## 捐赠
 

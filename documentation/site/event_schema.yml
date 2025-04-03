@@ -1,0 +1,605 @@
+---
+openapi: "3.1.0"
+info:
+  title: "MatchZy事件文档"
+  version: ""
+  description: |
+    这是MatchZy所有JSON事件和原生插件转发的文档。所有HTTP事件都将作为POST请求发送到您在
+    [`matchzy_remote_log_url`](configuration#matchzy_remote_log_url)中为MatchZy配置提供的URL根目录。您应该检查
+    `event`属性的值以确定事件类型。您不能选择接收哪些事件，但可以丢弃不需要的事件。
+
+    您应该对所有请求返回200范围的HTTP代码，否则MatchZy会认为它们失败。HTTP超时为15秒，没有自动重试。
+    注意：此文档受Get5启发。目前只支持那些G5V/G5API正常运行所需的事件。不过，这些事件应该足以获取
+    大部分比赛和玩家相关数据。
+webhooks:
+  "MatchZyOnSeriesInit":
+    post:
+      tags:
+        - 系列赛流程
+      summary: MatchZyOnSeriesInit
+      description: |
+        在加载比赛配置后开始系列赛时触发。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: MatchZySeriesStartedEvent
+              allOf:
+                - "$ref": "#/components/schemas/MatchZyMatchEvent"
+                - type: object
+                  properties:
+                    event:
+                      enum:
+                        - series_start
+                    num_maps:
+                      type: integer
+                      minimum: 1
+                      description: 系列赛中的地图数量，例如BO3为3。
+                    team1:
+                      "$ref": "#/components/schemas/MatchZyTeamWrapper"
+                    team2:
+                      "$ref": "#/components/schemas/MatchZyTeamWrapper"
+  "MatchZyOnMapResult":
+    post:
+      tags:
+        - 系列赛流程
+      summary: MatchZyOnMapResult
+      description: |
+        在地图结束时触发。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: MapResultEvent
+              allOf:
+                - "$ref": "#/components/schemas/MatchZyMapEvent"
+                - type: object
+                  properties:
+                    event:
+                      enum:
+                        - map_result
+                    team1:
+                      $ref: "#/components/schemas/MatchZyStatsTeam"
+                    team2:
+                      $ref: "#/components/schemas/MatchZyStatsTeam"
+                    winner:
+                      $ref: "#/components/schemas/Winner"
+  "MatchZyOnSeriesResult":
+    post:
+      tags:
+        - 系列赛流程
+      summary: MatchZyOnSeriesResult
+      description: |
+        在系列赛结束时触发。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: MatchZySeriesResultEvent
+              allOf:
+                - "$ref": "#/components/schemas/MatchZyMatchEvent"
+                - type: object
+                  properties:
+                    event:
+                      enum:
+                        - series_end
+                    team1_series_score:
+                      type: integer
+                      minimum: 0
+                      example: 2
+                      description: 队伍1的地图/系列得分。
+                    team2_series_score:
+                      type: integer
+                      minimum: 0
+                      description: 队伍2的地图/系列得分。
+                    winner:
+                      $ref: "#/components/schemas/Winner"
+                    time_until_restore:
+                      type: integer
+                      minimum: 0
+                      example: 45
+                      description: |
+                        系列赛结束后，MatchZy恢复任何已更改的ConVars并将其游戏状态重置为`none`前的秒数。
+  "MatchZyOnSidePicked":
+    post:
+      tags:
+        - 系列赛流程
+      summary: MatchZyOnSidePicked
+      description: |
+        当一支队伍选择阵营时触发。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: MatchZySidePickedEvent
+              allOf:
+                - "$ref": "#/components/schemas/MatchZyMapSelectionEvent"
+                - type: object
+                  properties:
+                    event:
+                      enum:
+                        - side_picked
+                    side:
+                      $ref: "#/components/schemas/Side"
+                    map_number:
+                      type: integer
+                      minimum: 0
+                      description: 队伍为其选择阵营的地图编号。
+  "MatchZyOnMapPicked":
+    post:
+      tags:
+        - 系列赛流程
+      summary: MatchZyOnMapPicked
+      description: |
+        当一支队伍选择地图时触发。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: MatchZyMapPickedEvent
+              allOf:
+                - "$ref": "#/components/schemas/MatchZyMapSelectionEvent"
+                - type: object
+                  properties:
+                    event:
+                      enum:
+                        - map_picked
+                    map_number:
+                      type: integer
+                      minimum: 0
+                      description: 所选地图的地图编号。
+  "MatchZyOnMapVetoed":
+    post:
+      tags:
+        - 系列赛流程
+      summary: MatchZyOnMapVetoed
+      description: |
+        当一支队伍否决地图时触发。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: MatchZyMapPickedEvent
+              allOf:
+                - "$ref": "#/components/schemas/MatchZyMapSelectionEvent"
+                - type: object
+                  properties:
+                    event:
+                      enum:
+                        - map_vetoed
+
+  "MatchZyOnGoingLive":
+    post:
+      tags:
+        - 地图流程
+      summary: MatchZyOnGoingLive
+      description: |
+        当地图即将开始时触发。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: GoingLiveEvent
+              allOf:
+                - "$ref": "#/components/schemas/MatchZyMapEvent"
+                - type: object
+                  properties:
+                    event:
+                      enum:
+                        - going_live
+  "MatchZyOnRoundEnd":
+    post:
+      tags:
+        - 实况
+      summary: MatchZyOnRoundEnd
+      description: |
+        当回合结束时触发 - 在结果出现时，而不是回合停止时。这之后可能仍有游戏活动。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: MatchZyRoundEndedEvent
+              allOf:
+                - "$ref": "#/components/schemas/MatchZyTimedRoundEvent"
+                - type: object
+                  properties:
+                    event:
+                      enum:
+                        - round_end
+                    reason:
+                      type: integer
+                      minimum: 0
+                      description: 回合结束的原因。参见 https://github.com/roflmuffin/CounterStrikeSharp/blob/main/managed/CounterStrikeSharp.API/Modules/Entities/Constants/RoundEndReason.cs#L19。
+                    winner:
+                      $ref: "#/components/schemas/Winner"
+                    team1:
+                      title: MatchZyStatsTeam
+                      description: 队伍1的统计信息。
+                      allOf:
+                        - $ref: "#/components/schemas/MatchZyStatsTeam"
+                    team2:
+                      title: MatchZyStatsTeam
+                      description: 队伍2的统计信息。
+                      allOf:
+                        - $ref: "#/components/schemas/MatchZyStatsTeam"
+  "MatchZyOnDemoUploadEnded":
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: MatchZyDemoUploadEndedEvent
+              allOf:
+                - "$ref": "#/components/schemas/MatchZyDemoFileEvent"
+                - type: object
+                  properties:
+                    event:
+                      enum:
+                        - demo_upload_ended
+                    success:
+                      type: boolean
+                      description: 上传是否成功。
+
+components:
+  schemas:
+    MatchZyEvent:
+      type: object
+      properties:
+        event:
+          type: string
+          description: 事件的名称。
+    MatchZyMatchEvent:
+      allOf:
+        - "$ref": "#/components/schemas/MatchZyEvent"
+        - type: object
+          properties:
+            matchid:
+              type: integer
+              description: 比赛的ID。
+              example: 14272
+    MatchZyMatchTeamEvent:
+      allOf:
+        - "$ref": "#/components/schemas/MatchZyMatchEvent"
+        - type: object
+          properties:
+            team:
+              $ref: "#/components/schemas/Team"
+    MatchZyMapEvent:
+      allOf:
+        - "$ref": "#/components/schemas/MatchZyMatchEvent"
+        - type: object
+          properties:
+            map_number:
+              type: integer
+              minimum: 0
+              example: 0
+              description: 系列赛中的地图编号，从0开始。
+    MatchZyMapSelectionEvent:
+      allOf:
+        - "$ref": "#/components/schemas/MatchZyMatchTeamEvent"
+        - type: object
+          properties:
+            map_name:
+              type: string
+              example: de_nuke
+              description:
+                与事件相关的地图名称（地图选择/禁用等）。
+    MatchZyMapTeamEvent:
+      allOf:
+        - "$ref": "#/components/schemas/MatchZyMapEvent"
+        - type: object
+          properties:
+            team:
+              $ref: "#/components/schemas/Team"
+    MatchZyRoundEvent:
+      allOf:
+        - "$ref": "#/components/schemas/MatchZyMapEvent"
+        - type: object
+          properties:
+            round_number:
+              type: integer
+              minimum: 0
+              example: 13
+              description: 地图的回合编号，从0开始。
+    MatchZyTimedRoundEvent:
+      allOf:
+        - "$ref": "#/components/schemas/MatchZyRoundEvent"
+        - type: object
+          properties:
+            round_time:
+              type: integer
+              description: 事件发生时回合已经进行的毫秒数。
+              minimum: 0
+              example: 51434
+    Winner:
+      type: object
+      description: 描述赢得胜利的队伍（他们的阵营和队伍编号）。
+      properties:
+        side:
+          $ref: "#/components/schemas/Side"
+        team:
+          $ref: "#/components/schemas/Team"
+    Team:
+      type: string
+      nullable: true
+      description: 代表一支队伍。如果没有队伍，则为`null`。表示为整数枚举。
+      enum:
+        - team1
+        - team2
+        - spec
+    Side:
+      type: string
+      nullable: true
+      description: 代表一个阵营（CT vs T）。如果没有阵营，则为`null`。表示为整数枚举。
+      enum:
+        - ct
+        - t
+        - spec
+    MatchZyTeamWrapper:
+      type: object
+      description: 描述一支队伍（`Team1`或`Team2`）。
+      properties:
+        id:
+          type: string
+          description: 用户提供的队伍ID，如果提供了的话。
+          example: "2843"
+          nullable: true
+        name:
+          type: string
+          description: 队伍的名称。
+          example: Natus Vincere
+    MatchZyStatsTeam:
+      description: 描述一支队伍及其得分和玩家统计信息。
+      allOf:
+        - $ref: "#/components/schemas/MatchZyTeamWrapper"
+        - type: object
+          properties:
+            series_score:
+              type: integer
+              minimum: 0
+              description: 队伍当前的系列赛得分，即他们在系列赛中已赢得的地图数量。
+            score:
+              type: integer
+              minimum: 0
+              description: 队伍在当前地图上的总得分。
+              example: 14
+            score_ct:
+              type: integer
+              minimum: 0
+              description: 队伍在当前地图上CT方的得分。
+              example: 10
+            score_t:
+              type: integer
+              minimum: 0
+              description: 队伍在当前地图上T方的得分。
+              example: 14
+            players:
+              type: array
+              description: 队伍中的玩家。
+              items:
+                $ref: "#/components/schemas/StatsPlayer"
+            side:
+              title: Side
+              description: 队伍当前的阵营。
+              allOf:
+                - $ref: "#/components/schemas/Side"
+            starting_side:
+              title: Side
+              description: 队伍开始时的阵营。
+              allOf:
+                - $ref: "#/components/schemas/Side"
+    StatsPlayer:
+      allOf:
+        - type: object
+          properties:
+            steamid:
+              type: string
+              example: "76561198279375306"
+              description: |
+                玩家的SteamID64。
+            name:
+              type: string
+              description: |
+                玩家的游戏内名称。
+              example: s1mple
+            stats:
+              $ref: "#/components/schemas/PlayerStats"
+    PlayerStats:
+      type: object
+      description: 玩家的统计信息。
+      properties:
+        kills:
+          type: integer
+          minimum: 0
+          description: "玩家的击杀数。"
+          example: 34
+        deaths:
+          type: integer
+          minimum: 0
+          description: "玩家的死亡数。"
+          example: 8
+        assists:
+          type: integer
+          minimum: 0
+          description: "玩家的助攻数。"
+          example: 5
+        flash_assists:
+          type: integer
+          minimum: 0
+          description: "玩家的闪光弹助攻数。"
+          example: 3
+        team_kills:
+          type: integer
+          minimum: 0
+          description: "玩家的击杀队友数。"
+          example: 0
+        suicides:
+          type: integer
+          minimum: 0
+          description: "玩家的自杀数。"
+          example: 0
+        damage:
+          type: integer
+          minimum: 0
+          description: "玩家造成的总伤害量。"
+          example: 2948
+        utility_damage:
+          type: integer
+          minimum: 0
+          description: "玩家通过工具造成的总伤害量。"
+          example: 173
+        enemies_flashed:
+          type: integer
+          minimum: 0
+          description: "玩家闪到的敌人数量。"
+          example: 6
+        friendlies_flashed:
+          type: integer
+          minimum: 0
+          description: "玩家闪到的队友数量。"
+          example: 2
+        knife_kills:
+          type: integer
+          minimum: 0
+          description: "玩家用刀击杀的数量。"
+          example: 1
+        headshot_kills:
+          type: integer
+          minimum: 0
+          description: "玩家的爆头击杀数量。"
+          example: 19
+        rounds_played:
+          type: integer
+          minimum: 0
+          description: "玩家开始参与的回合数。"
+          example: 27
+        bomb_defuses:
+          type: integer
+          minimum: 0
+          description: "玩家拆除炸弹的次数。"
+          example: 4
+        bomb_plants:
+          type: integer
+          minimum: 0
+          description: "玩家安装炸弹的次数。"
+          example: 3
+        1k:
+          type: integer
+          minimum: 0
+          description: "玩家击杀1名对手的回合数。"
+          example: 3
+        2k:
+          type: integer
+          minimum: 0
+          description: "玩家击杀2名对手的回合数。"
+          example: 2
+        3k:
+          type: integer
+          minimum: 0
+          description: "玩家击杀3名对手的回合数。"
+          example: 3
+        4k:
+          type: integer
+          minimum: 0
+          description: "玩家击杀4名对手的回合数。"
+          example: 0
+        5k:
+          type: integer
+          minimum: 0
+          description: "玩家击杀5名对手的回合数。"
+          example: 1
+        1v1:
+          type: integer
+          minimum: 0
+          description: "玩家赢得的1v1次数。"
+          example: 1
+        1v2:
+          type: integer
+          minimum: 0
+          description: "玩家赢得的1v2次数。"
+          example: 3
+        1v3:
+          type: integer
+          minimum: 0
+          description: "玩家赢得的1v3次数。"
+          example: 2
+        1v4:
+          type: integer
+          minimum: 0
+          description: "玩家赢得的1v4次数。"
+          example: 0
+        1v5:
+          type: integer
+          minimum: 0
+          description: "玩家赢得的1v5次数。"
+          example: 1
+        first_kills_t:
+          type: integer
+          minimum: 0
+          description: "玩家在T方时，在回合中首杀的回合数。"
+          example: 6
+        first_kills_ct:
+          type: integer
+          minimum: 0
+          description: "玩家在CT方时，在回合中首杀的回合数。"
+          example: 5
+        first_deaths_t:
+          type: integer
+          minimum: 0
+          description: "玩家在T方时，在回合中第一个死亡的回合数。"
+          example: 1
+        first_deaths_ct:
+          type: integer
+          minimum: 0
+          description: "玩家在CT方时，在回合中第一个死亡的回合数。"
+          example: 1
+        trade_kills:
+          type: integer
+          minimum: 0
+          description: "玩家在交火中获得击杀的次数。"
+          example: 3
+        kast:
+          type: integer
+          minimum: 0
+          description: "玩家(k)击杀了对手、有(a)助攻、(s)存活或被(t)交火的回合数。"
+          example: 23
+        score:
+          type: integer
+          minimum: 0
+          description: '玩家的游戏内"得分"。'
+          example: 45
+        mvp:
+          type: integer
+          minimum: 0
+          description: "玩家被选为回合MVP的次数。"
+          example: 4
+    MatchZyDemoFileEvent:
+      allOf:
+        - "$ref": "#/components/schemas/MatchZyMapEvent"
+        - type: object
+          properties:
+            filename:
+              type: string
+              example: "1324_map_0_de_nuke.dem"
+              description: |
+                包含地图CSTV录制的文件名。格式由`matchzy_demo_name_format`参数决定。
+tags:
+  - name: 所有事件
+    description: 为所有事件触发的转发。
+  - name: 系列赛流程
+    description: 与设置比赛或系列赛相关的事件。
+  - name: 地图流程
+    description: 与地图选择或地图上比赛事件相关的事件。
+  - name: 实况
+    description: 仅在实况回合期间发生的事件（不在刀局、veto或热身时间内）。
+  # - name: 客户端行动
+  #   description: 基于玩家聊天或连接活动发生的事件。 
